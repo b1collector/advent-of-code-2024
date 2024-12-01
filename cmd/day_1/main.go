@@ -4,9 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"log"
-	"math"
 	"os"
-	"slices"
 	"strconv"
 	"strings"
 )
@@ -52,14 +50,19 @@ func main() {
 		panic("The length of the two arrays do not match.")
 	}
 
-	slices.Sort(leftBuffer)
-	slices.Sort(rightBuffer)
+	// slices.Sort(leftBuffer)
+	// slices.Sort(rightBuffer)
 
 	sum := 0
 	for i := range len(leftBuffer) {
-		diff := int(math.Abs(float64(rightBuffer[i] - leftBuffer[i])))
-		sum += diff
-		log.Printf("Line: %d. Left: %d. Right: %d. Diff: %d. Sum: %d\n", i, leftBuffer[i], rightBuffer[i], diff, sum)
+		cnt := 0
+		for j := range len(rightBuffer) {
+			if leftBuffer[i] == rightBuffer[j] {
+				cnt++
+			}
+		}
+		sum += leftBuffer[i] * cnt
+		log.Printf("Line: %d. Left: %d. Count: %d. Sum: %d\n", i, leftBuffer[i], cnt, sum)
 	}
 
 	fmt.Printf("The final total is %d\n", sum)
