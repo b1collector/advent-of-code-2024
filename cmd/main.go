@@ -18,12 +18,13 @@ func main() {
 	}
 	defer file.Close()
 
-	rexp, err := regexp.Compile(`mul\(\d+,\d+\)`)
+	rexp, err := regexp.Compile(`mul\(\d+,\d+\)|do(n't)?`)
 	if err != nil {
 		panic(err)
 	}
 	scanner := bufio.NewScanner(file)
 	total := 0
+	shouldDo := true
 	for scanner.Scan() {
 		line := scanner.Text()
 		matches := rexp.FindAllString(line, -1)
@@ -31,7 +32,12 @@ func main() {
 			fmt.Printf("%s\n", match)
 			match, found := strings.CutPrefix(match, `mul(`)
 			if !found {
-				panic("Somehow found a match that wasn't an actual match")
+				shouldDo = match == "do"
+				continue
+				// panic("Somehow found a match that wasn't an actual match")
+			}
+			if !shouldDo {
+				continue
 			}
 			match, found = strings.CutSuffix(match, `)`)
 			if !found {
@@ -53,6 +59,6 @@ func main() {
 		}
 	}
 
-	fmt.Printf("Total: %d", total)
+	fmt.Printf("Total: %d\n", total)
 
 }
