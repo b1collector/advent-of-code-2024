@@ -40,122 +40,25 @@ func main() {
 	}
 
 	count := 0
-	for i := range size {
-		for j := range size {
+	for i := 1; i < size-1; i++ {
+		for j := 1; j < size-1; j++ {
 			// skip all the characters that do not match the first character in the
 			// search string
-			if searchArea[i][j] != x {
+			if searchArea[i][j] != a {
 				continue
 			}
 
-			if isNorthMatch(searchArea, i, j) {
+			if isXMatch(searchArea, i, j) {
 				count++
 			}
 
-			if isSouthMatch(searchArea, i, j) {
-				count++
-			}
-
-			if isWestMatch(searchArea, i, j) {
-				count++
-			}
-
-			if isEastMatch(searchArea, i, j) {
-				count++
-			}
-			if isNorthEastMatch(searchArea, i, j) {
-				count++
-			}
-			if isSouthEastMatch(searchArea, i, j) {
-				count++
-			}
-			if isSouthWestMatch(searchArea, i, j) {
-				count++
-			}
-			if isNorthWestMatch(searchArea, i, j) {
-				count++
-			}
 		}
 	}
 	fmt.Printf("Count: %d\n", count)
 }
 
-func isNorthMatch(searchArea [][]rune, i int, j int) bool {
-	if i-3 < 0 {
-		return false
-	}
-	return searchArea[i][j] == x &&
-		searchArea[i-1][j] == m &&
-		searchArea[i-2][j] == a &&
-		searchArea[i-3][j] == s
-}
-
-func isSouthMatch(searchArea [][]rune, i int, j int) bool {
-	if i+3 >= size {
-		return false
-	}
-	return searchArea[i][j] == x &&
-		searchArea[i+1][j] == m &&
-		searchArea[i+2][j] == a &&
-		searchArea[i+3][j] == s
-}
-
-func isWestMatch(searchArea [][]rune, i int, j int) bool {
-	if j-3 < 0 {
-		return false
-	}
-	return searchArea[i][j] == x &&
-		searchArea[i][j-1] == m &&
-		searchArea[i][j-2] == a &&
-		searchArea[i][j-3] == s
-}
-
-func isEastMatch(searchArea [][]rune, i int, j int) bool {
-	if j+3 >= size {
-		return false
-	}
-	return searchArea[i][j] == x &&
-		searchArea[i][j+1] == m &&
-		searchArea[i][j+2] == a &&
-		searchArea[i][j+3] == s
-}
-
-func isNorthEastMatch(searchArea [][]rune, i int, j int) bool {
-	if j+3 >= size || i-3 < 0 {
-		return false
-	}
-	return searchArea[i][j] == x &&
-		searchArea[i-1][j+1] == m &&
-		searchArea[i-2][j+2] == a &&
-		searchArea[i-3][j+3] == s
-}
-
-func isSouthEastMatch(searchArea [][]rune, i int, j int) bool {
-	if j+3 >= size || i+3 >= size {
-		return false
-	}
-	return searchArea[i][j] == x &&
-		searchArea[i+1][j+1] == m &&
-		searchArea[i+2][j+2] == a &&
-		searchArea[i+3][j+3] == s
-}
-
-func isNorthWestMatch(searchArea [][]rune, i int, j int) bool {
-	if j-3 < 0 || i-3 < 0 {
-		return false
-	}
-	return searchArea[i][j] == x &&
-		searchArea[i-1][j-1] == m &&
-		searchArea[i-2][j-2] == a &&
-		searchArea[i-3][j-3] == s
-}
-
-func isSouthWestMatch(searchArea [][]rune, i int, j int) bool {
-	if j-3 < 0 || i+3 >= size {
-		return false
-	}
-	return searchArea[i][j] == x &&
-		searchArea[i+1][j-1] == m &&
-		searchArea[i+2][j-2] == a &&
-		searchArea[i+3][j-3] == s
+func isXMatch(searchArea [][]rune, i int, j int) bool {
+	return searchArea[i][j] == a &&
+		((searchArea[i-1][j-1] == m && searchArea[i+1][j+1] == s) || (searchArea[i-1][j-1] == s && searchArea[i+1][j+1] == m)) &&
+		((searchArea[i-1][j+1] == m && searchArea[i+1][j-1] == s) || (searchArea[i-1][j+1] == s && searchArea[i+1][j-1] == m))
 }
